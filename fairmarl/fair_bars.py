@@ -10,8 +10,8 @@ ekrem = [1.0, 1.0, 1.0, 1.0, 1.22]
 
 x = np.arange(len(envs)); w = 0.38
 fig, ax = plt.subplots(figsize=(6.2, 3.4))
-ax.bar(x - w / 2, baseline, w, label="baseline (welfare-fair)", color="tab:red")
-ax.bar(x + w / 2, ekrem, w, label="EKREM (ours)", color="tab:green")
+ax.bar(x - w / 2, baseline, w, label="baseline", color="tab:red")
+ax.bar(x + w / 2, ekrem, w, label="EKREM", color="tab:green")
 ax.axhline(1.0, ls="--", c="k", lw=0.8, label="fair share (1$\\times$)")
 ax.set_xticks(x); ax.set_xticklabels(envs)
 ax.set_ylabel("defector free-ride factor $\\rho$")

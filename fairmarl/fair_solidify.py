@@ -60,9 +60,9 @@ def main():
             (bse if env == "donate" else fse)[n] = frs
         fig, ax = plt.subplots(figsize=(6, 4.2))
         ax.errorbar(ns, [base[n] for n in ns], yerr=[bse[n] for n in ns],
-                    marker="o", label="baseline GGF-fair (exploitable)", color="tab:red")
+                    marker="o", label="baseline", color="tab:red")
         ax.errorbar(ns, [fix[n] for n in ns], yerr=[fse[n] for n in ns],
-                    marker="s", label="fairness-aware allocator (ours)", color="tab:green")
+                    marker="s", label="EKREM", color="tab:green")
         ax.plot(ns, ns, ls=":", color="grey", label="max free-ride (= n)")
         ax.axhline(1.0, ls="--", color="k", lw=0.8, label="fair share (1x)")
         ax.set_xlabel("team size n"); ax.set_ylabel("defector free-ride factor")

@@ -36,10 +36,11 @@ Fair cooperative multi-agent reinforcement learning (MARL) methods such as SOTO
 and FEN train agents to optimize a fairness-inducing welfare function (e.g.\ the
 Generalized Gini Welfare) over the team's returns, so that no agent is left
 behind. These methods implicitly assume that \emph{every} agent cooperates in
-being fair. We show that this assumption is a vulnerability: a single
-self-interested agent can \emph{exploit} a welfare-optimizing team, because fair
-agents sacrifice their own utility to raise the worst-off and a best-response
-defector appropriates that surplus. In rivalrous allocation games the effect is
+being fair. Building on the known observation that welfare-\emph{maximizing}
+cooperation can be gamed by defectors, we isolate and quantify the
+\emph{fairness}-specific case: a single self-interested agent can exploit a
+welfare-optimizing team, because fair agents sacrifice their own utility to raise
+the worst-off and a best-response defector appropriates that surplus. In rivalrous allocation games the effect is
 \emph{exact by construction}: when the welfare-optimal policy is to yield, a lone
 claimant takes everything, so the free-ride factor equals the team size $N$ (these
 serve as analytical sanity checks, and a faithful SOTO learner reproduces the same
@@ -79,9 +80,12 @@ controller is upgraded to greedily minimize its own delay, or fair bandwidth
 sharing where one client maximizes its own throughput: the remaining controllers
 still ``play fair,'' yielding capacity to the worst-off. Agents may be controlled
 by different stakeholders, or one agent may simply be trained (or retrained) to
-maximize its own return. We ask a basic robustness question that the fair-MARL
-literature has largely left implicit: \emph{what happens to a welfare-optimizing
-fair team when a single member is self-interested?}
+maximize its own return. We ask a basic robustness question: \emph{what happens to
+a welfare-optimizing fair team when a single member is self-interested?} That
+welfare-\emph{maximizing} cooperation can in general be gamed by defectors was
+noted by Ivanov et al.~\cite{ivanov2023mediated}; our focus is the \emph{fairness}
+instance specifically---its mechanism, its quantification, and what it takes to
+fix.
 
 We find the answer is sharp. Because fair (team-oriented) agents
 \emph{sacrifice} their own utility---yielding resources to raise the worst-off---a
@@ -119,17 +123,21 @@ SOTO~\cite{zimmer2021soto} learns a \emph{Self-Oriented} sub-network (own return
 and a \emph{Team-Oriented} sub-network (welfare), annealing behavior from
 self-oriented to team-oriented over training.
 
-\textbf{Fairness under self-interest.} A complementary line incentivizes fairness
-among self-interested agents via \emph{mediators}: Ivanov et al.~\cite{ivanov2023mediated}
+\textbf{Self-interest and mediators.} The closest work is the mediator line.
+Ivanov et al.~\cite{ivanov2023mediated} explicitly observe that
+welfare-\emph{maximizing} cooperation can be exploited by selfish defectors and
 restore cooperation through an incentive-compatible (IC) mediator that respects
-agents' boundaries, and Dodwadmath and Maghsudi~\cite{dodwadmath2025mediators}
-elicit fair leaders via mediators (their JAM-QL framework). These methods
-\emph{deter} free-riding through IC rather than learned reciprocity, and so are
-closely related to our positive result. Our \emph{question}, however, is dual and,
-to our knowledge, not previously isolated: taking an existing \emph{cooperative}
-fair learner as given, how fragile is it when one member defects? We
-\emph{stress-test} welfare-optimizing fair methods with a best-response defector
-and quantify their exploitability.
+agents' boundaries; Dodwadmath and Maghsudi~\cite{dodwadmath2025mediators} elicit
+fair leaders via mediators (their JAM-QL framework). \emph{We credit
+\cite{ivanov2023mediated} for the general observation} that welfare-maximizing
+teams are exploitable---it is not our contribution. What is ours is specific to it:
+(i) the \emph{fairness/GGF instantiation}, where the equity term that raises the
+worst-off is precisely the appropriable surplus; (ii) a \emph{quantified}
+best-response exploitability---the free-ride factor $\rho$ measured against a
+faithful fair learner (SOTO) and its scaling $\rho\!\approx\!N$; and (iii) a
+\emph{policy-vs-mechanism dichotomy}: we prove (Prop.~1) that learned reciprocity
+cannot fix it, so the remedy must be a need-based allocation mechanism (EKREM),
+which complements rather than reuses \cite{ivanov2023mediated}'s mediator.
 
 \textbf{Social dilemmas and free-riding.} The vulnerability we expose is a
 fairness-specific instance of free-riding in sequential social
@@ -442,13 +450,19 @@ self-interest}---an exploitability audit---since the former can be high while th
 latter is near-zero.
 
 \section{Conclusion}
-Welfare-optimizing fair MARL is exploitable: a single self-interested agent can
-free-ride on the team's sacrifice by up to $N\times$, and the effect worsens with
-scale and holds against a faithful SOTO implementation. Policy-level reciprocity
-cannot fix this, for a structural reason; EKREM, a simple need-based allocation
-mechanism, can. We hope the exploitability lens encourages fair-MARL methods to be evaluated
-not only for the fairness they achieve under full cooperation, but for the
-fairness they \emph{retain} under self-interest.
+Welfare-optimizing fair MARL is exploitable: a single best-response defector
+free-rides by up to $N\times$---exact in the yield-based games, and
+$1.9$--$3.0\times$ under genuine learned contention---the effect worsens with team
+size, and it holds against a faithful SOTO learner. That welfare-maximizing
+cooperation is gameable in general was observed by Ivanov et
+al.~\cite{ivanov2023mediated}; our contribution is the fairness-specific instance,
+its quantified best-response free-ride factor, and a policy-vs-mechanism
+dichotomy---learned reciprocity provably cannot fix it (Prop.~1), whereas EKREM
+can, by relocating allocation to a trusted need-based mechanism, \emph{sidestepping
+rather than solving} the decentralized case. We hope the exploitability lens
+encourages fair-MARL methods to be evaluated not only for the fairness they achieve
+under full cooperation, but for the fairness they \emph{retain} under
+self-interest.
 
 \section*{Code Availability}
 All code (environments, SOTO, EKREM, and experiments) and the \LaTeX{} source are
